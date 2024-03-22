@@ -503,13 +503,13 @@ module Mongoid
     # @return [ Object ] The result of the method call.
     #
     # @since 1.0.0
-    def method_missing(name, *args, &block)
+    def method_missing(name, *args, **kwargs, &block)
       if klass.respond_to?(name)
         klass.send(:with_scope, self) do
-          klass.send(name, *args, &block)
+          klass.send(name, *args, **kwargs, &block)
         end
       elsif CHECK.respond_to?(name)
-        return entries.send(name, *args, &block)
+        return entries.send(name, *args, **kwargs, &block)
       else
         super
       end
